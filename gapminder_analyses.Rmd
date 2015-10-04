@@ -1,0 +1,82 @@
+---
+title: "Gapminder_analyses"
+author: "Benjamin Weiner"
+date: "10/4/2015"
+output: html_document
+---
+
+## Demographic analyses with R
+
+These are analyses of the Gapminder demographic data using Rstudio.
+
+The document and plots are produced using R markdown language.
+
+
+```{r load-dplyr, echo=FALSE}
+#install.packages("dplyr")
+library("dplyr")
+```
+
+```{r read-in-data}
+gap.in <- read.table("output/combined_gapMinder.tsv", sep="\t", header=TRUE)
+
+gap.in %>%
+  select(pop,country) %>%
+  head()
+gap.in %>%
+  select(year,pop,country, continent) %>%
+  filter(year == 2002) %>%
+  group_by(continent) %>%
+  summarise(mean = mean(pop))
+
+
+```
+
+``` {r define-plot}
+
+make_plot <- function(countryname) {
+  foo <- gap.in %>%
+    select(year, country, pop, gdpPercap) %>%
+    filter(country == countryname) 
+  #print(foo)
+  plot(x = foo$year, y = foo$gdpPercap,
+         xlab = "Year",
+         ylab = "GDP per capita",
+         main = paste("GDP for", countryname),
+         #cex = foo$pop/1e7,
+         col = "red")
+}
+
+```
+
+
+``` {r plot-japan}
+
+make_plot("Japan")
+
+```
+
+Japan's GDP shows substantial growth after WWII until a period of stagnation beginning in the 1990s.
+
+
+``` {r plot-southkorea}
+
+make_plot("Korea, Rep.")
+
+```
+
+South Korea's GDP was relatively flat until the late 1970s and has increased dramatically since.
+
+``` {r plot-chile}
+
+make_plot("Chile")
+
+```
+
+Chile's GDP plot shows slow growth and an actual decline in the late 1970s, probably related to the coup and military government, until beginning a steep incrase in the 1990s after the return to democratic government.
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. You can interpret code inline like r (2+2) = `r (2+2)`.
