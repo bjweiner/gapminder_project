@@ -75,7 +75,47 @@ make_plot("Chile")
 
 Chile's GDP plot shows slow growth and an actual decline in the late 1970s, probably related to the coup and military government, until beginning a steep incrase in the 1990s after the return to democratic government.
 
+``` {r-lifeterms}
 
+# This is mean lifeExp across countries, not weighted properly by people
+#gap.in %>%
+#  select(year,pop,country, continent, lifeExp) %>%
+#    group_by(continent) %>%
+#  summarise(mean = mean(lifeExp))
+
+# This should be mean lifeExp weighted per person
+avglife <- gap.in %>%
+  select(year,pop,country, continent, lifeExp) %>%
+    group_by(continent) %>%
+  summarise(mean = sum(lifeExp*pop) / sum(pop))
+
+avggdp <- gap.in %>%
+  select(year,pop,country, continent, lifeExp, gdpPercap) %>%
+    group_by(continent) %>%
+  summarise(mean = sum(gdpPercap*pop) / sum(pop))
+
+print(avglife)
+
+print(avggdp)
+
+plot(avggdp,avglife,
+     xlab = "Continent average GDP"
+     ylab = "Continent average life expectancy")
+
+```
+
+The mean life expectancy varies greatly from continent to continent and is correlated with GDP per capita.
+
+``` {r-lifegdp}
+
+
+plot(log10(gap.in$gdpPercap), gap.in$lifeExp,
+     xlab = "Country log10 GDP per capita",
+     ylab = "Country average life expectancy")
+
+```
+
+On a country by country basis there is a strong correlation between log GDP per capita and life expectancy, with some possibly interesting low outliers.
 
 
 
