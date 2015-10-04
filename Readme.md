@@ -1,6 +1,7 @@
 
-### Readme file for gapminer analysis 
+### Readme file for gap miner analysis 
 
-This is a set of *scripts* and **data** that describe population and GDP of 
-countries.
+This is a group of *scripts* and **data** that describe population and GDP of 
+countries around the world.
+
 
