@@ -17,22 +17,22 @@ The document and plots are produced using R markdown language.
 library("dplyr")
 ```
 
-```{r read-in-data}
+```{r read-in-data, echo=FALSE}
 gap.in <- read.table("output/combined_gapMinder.tsv", sep="\t", header=TRUE)
 
-gap.in %>%
-  select(pop,country) %>%
-  head()
-gap.in %>%
-  select(year,pop,country, continent) %>%
-  filter(year == 2002) %>%
-  group_by(continent) %>%
-  summarise(mean = mean(pop))
+# gap.in %>%
+#  select(pop,country) %>%
+#  head()
+# gap.in %>%
+#  select(year,pop,country, continent) %>%
+#  filter(year == 2002) %>%
+#  group_by(continent) %>%
+#  summarise(mean = mean(pop))
 
 
 ```
 
-``` {r define-plot}
+``` {r define-plot, echo=FALSE}
 
 make_plot <- function(countryname) {
   foo <- gap.in %>%
@@ -50,7 +50,7 @@ make_plot <- function(countryname) {
 ```
 
 
-``` {r plot-japan}
+``` {r plot-japan, echo=FALSE}
 
 make_plot("Japan")
 
@@ -59,7 +59,7 @@ make_plot("Japan")
 Japan's GDP shows substantial growth after WWII until a period of stagnation beginning in the 1990s.
 
 
-``` {r plot-southkorea}
+``` {r plot-southkorea, echo=FALSE}
 
 make_plot("Korea, Rep.")
 
@@ -67,7 +67,7 @@ make_plot("Korea, Rep.")
 
 South Korea's GDP was relatively flat until the late 1970s and has increased dramatically since.
 
-``` {r plot-chile}
+``` {r plot-chile, echo=FALSE}
 
 make_plot("Chile")
 
@@ -75,7 +75,7 @@ make_plot("Chile")
 
 Chile's GDP plot shows slow growth and an actual decline in the late 1970s, probably related to the coup and military government, until beginning a steep incrase in the 1990s after the return to democratic government.
 
-``` {r-lifeterms}
+``` {r lifeterms, echo=FALSE}
 
 # This is mean lifeExp across countries, not weighted properly by people
 #gap.in %>%
@@ -99,15 +99,21 @@ print(avglife)
 print(avggdp)
 
 plot(avggdp,avglife,
-     xlab = "Continent average GDP"
+     xlab = "Continent average GDP",
      ylab = "Continent average life expectancy")
 
 ```
 
+``` {r print_avg}
+
+print(avglife)
+
+print(avggdp)
+```
+
 The mean life expectancy varies greatly from continent to continent and is correlated with GDP per capita.
 
-``` {r-lifegdp}
-
+``` {r lifegdp, echo=FALSE}
 
 plot(log10(gap.in$gdpPercap), gap.in$lifeExp,
      xlab = "Country log10 GDP per capita",
@@ -117,6 +123,20 @@ plot(log10(gap.in$gdpPercap), gap.in$lifeExp,
 
 On a country by country basis there is a strong correlation between log GDP per capita and life expectancy, with some possibly interesting low outliers.
 
+``` {r lifehist, echo=FALSE}
 
+hist(gap.in$lifeExp,
+     xlab='Years',
+     ylab='Number',
+     main='Life expectancy per country')
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. You can interpret code inline like r (2+2) = `r (2+2)`.
+hist(gap.in$lifeExp,
+     breaks=25,
+     xlab='Years',
+     ylab='Number',
+     main='Life expectancy per country')
+
+```
+
+The life expectancy histogram is skewed, with a long tail towards short life expectancy.  The finer-scale histogram shows that the tail is not steadily declining, but there is a plateau, or even a second peak around 40-50 years, and then a strong decline with few countries below 40 years.
+
