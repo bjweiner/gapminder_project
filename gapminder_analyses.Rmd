@@ -2,7 +2,7 @@
 title: "Gapminder_analyses"
 author: "Benjamin Weiner"
 date: "10/4/2015"
-output: html_document
+output: pdf_document
 ---
 
 ## Demographic analyses with R
